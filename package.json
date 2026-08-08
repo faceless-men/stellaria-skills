@@ -1,0 +1,14 @@
+{
+  "name": "stellaria-skill",
+  "version": "1.0.0",
+  "description": "A Codex skill for stellaria system",
+  "bin": {
+    "stellaria-skill": "./bin/install.js"
+  },
+  "scripts": {
+    "test": "node bin/install.js"
+  },
+  "keywords": ["stellaria", "codex-skill", "codex"],
+  "author": "Ted",
+  "license": "MIT",
+}
