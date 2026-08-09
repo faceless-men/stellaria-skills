@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 const CONFIG_PATH = path.join(os.homedir(), '.codex', 'config.json');
-const CONFIG_KEY = 'MY_SERVICE_ACCESS_KEY';
+const CONFIG_KEY = 'STELLARIA_ACCESS_KEY';
 
 function readConfig() {
   if (!fs.existsSync(CONFIG_PATH)) return {};
