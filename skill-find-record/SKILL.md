@@ -16,7 +16,7 @@ description: 按姓名查找客户的病例记录，并撰写针对日本医院�
 
 2. **确认患者姓名后**，运行以下命令从服务器检索该客户的病例信息：
    ```
-   node skill-get-record/index.js <客户姓名>
+   python3 skill-find-record/script/index.py <客户姓名>
    ```
 
 3. **成功获取病例记录后**，仔细阅读病例内容并结合返回的基本信息，按照以下要求撰写诊疗情报提供书。
@@ -42,10 +42,10 @@ description: 按姓名查找客户的病例记录，并撰写针对日本医院�
 # Examples
 
 输入：给我一份关于张三的诊疗情报书
-输出：运行 `node skill-get-record/index.js 张三`，获取病例记录后撰写诊疗情报提供书
+输出：运行 `python3 skill-find-record/script/index.py 张三`，获取病例记录后撰写诊疗情报提供书
 
 输入：帮我写诊疗情报提供书
 输出：礼貌追问「请问您需要为哪位患者撰写诊疗情报提供书？」
 
 输入：查一下李四的病历
-输出：运行 `node skill-get-record/index.js 李四`，获取病例记录后撰写诊疗情报提供书
+输出：运行 `python3 skill-find-record/script/index.py 李四`，获取病例记录后撰写诊疗情报提供书
