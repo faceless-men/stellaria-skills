@@ -14,9 +14,9 @@ from auth import get_access_key
 def create_record(record: dict) -> None:
     key = get_access_key()
 
-    base_url = (os.getenv("PATIENT_API_BASE_URL") or "http://localhost:8888").rstrip("/")
+    base_url = (os.getenv("STELLARIA_API_BASE_URL") or "http://localhost:8888").rstrip("/")
 
-    organize_id = os.getenv("PATIENT_ORGANIZE_ID", "").strip()
+    organize_id = os.getenv("STELLARIA_ORGANIZE_ID", "").strip()
     if organize_id:
         record.setdefault("patient", {})["organizeId"] = int(organize_id)
 

@@ -124,14 +124,14 @@ python3 skill-create-record/script/submit.py '<JSON字符串>'
 | `找不到工作表 "Page１"` | Excel 格式不符合模板 | 确认使用的是标准调查表模板 |
 | `出生年月日格式不合法` | 日期格式未转换为 ISO8601 | 检查第三步中 birthday 字段是否正确转换 |
 | `未能从表单中识别患者姓名` | name 字段为空 | 确认表单 Page1 中患者姓名已填写 |
-| `连接后端失败` | 患者系统未启动 | 确认后端服务已启动，检查 `PATIENT_API_BASE_URL` 配置 |
+| `连接后端失败` | 患者系统未启动 | 确认后端服务已启动，检查 `STELLARIA_API_BASE_URL` 配置 |
 
 ## 环境变量
 
 | 变量 | 说明 | 默认值 |
 |---|---|---|
-| `PATIENT_API_BASE_URL` | 患者系统后端地址 | `http://localhost:8888` |
-| `PATIENT_ORGANIZE_ID` | 机构 ID，会覆盖提取的值 | — |
+| `STELLARIA_API_BASE_URL` | 患者系统后端地址 | `http://localhost:8888` |
+| `STELLARIA_ORGANIZE_ID` | 机构 ID，会覆盖提取的值 | — |
 
 ## Excel 模板格式
 

@@ -22,7 +22,7 @@ def main() -> None:
     print(f"🔑 成功获取 Access Key: {key[:4]}****")
     print(f"📡 正在查询客户 \"{customer_name}\" 的病例记录...")
 
-    base_url = (os.environ.get("PATIENT_API_BASE_URL") or "http://127.0.0.1:8888").rstrip("/")
+    base_url = (os.environ.get("STELLARIA_API_BASE_URL") or "http://127.0.0.1:8888").rstrip("/")
     url = f"{base_url}/auth/findRecord?{urlencode({'name': customer_name})}"
 
     req = urllib.request.Request(url, headers={"XTOKEN": key}, method="GET")
