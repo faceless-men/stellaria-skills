@@ -29,7 +29,11 @@ def create_record(record: dict) -> None:
     )
     try:
         with urllib.request.urlopen(req) as resp:
-            resp.read()
+            body = resp.read().decode(errors="replace")
+        j = json.loads(body)
+        if j.get("code") != 0:
+            print(f"❌ 录入失败 ({j.get('code')}): {j.get('msg', body)}", file=sys.stderr)
+            sys.exit(1)
     except HTTPError as e:
         body = e.read().decode(errors="replace")
         try:

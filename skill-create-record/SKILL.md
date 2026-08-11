@@ -81,7 +81,8 @@ python3 skill-create-record/script/parse.py <Excel文件路径>
 4. `patient.languages`：■选中的语言用逗号拼接，日文→2，英文→1，中文→3；"其他"后的内容直接追加
 5. `patient.height` / `patient.weight`：提取整数（"156cm"→156，"40 kg"→40）
 6. `patient.reports`：■选中的资料用逗号拼接，画像CD-ROM→1，各种血液检查→2，病理检查→3，基因検查→4；"其他"后的内容直接追加
-7. `patient.channel`：固定填写 `"slack"`
+7. `patient.treatState`：治疗前 → 1
+7. `patient.channel`：固定填写 `"codex"`
 8. `diseaseInfo.purpose`：■选中后用逗号拼接，第二诊疗意见→1，希望在日本接受治疗→2；"其他【XXX】"中的XXX直接追加
 9. `diseaseInfo.currentTreat`：■选中后用逗号拼接，手术→1，放疗→2，化疗→3；"其他【XXX】"中的XXX直接追加
 10. `diseaseInfo.historyOfDisease`：提取"既往病史："后的内容
@@ -116,6 +117,14 @@ python3 skill-create-record/script/submit.py '<JSON字符串>'
 
 - 成功时：展示返回的患者档案摘要信息，向用户确认录入成功。
 - 失败时：将错误信息告知用户，并根据错误类型给出修复建议。
+
+若脚本输出 `STELLARIA_ACCESS_KEY_MISSING` 错误，说明尚未配置访问密钥，按以下步骤处理：
+1. 询问用户提供 Access Key
+2. 运行以下命令将其保存至 `~/.codex/config.json`（将 `<KEY>` 替换为用户提供的值）：
+   ```
+   python3 -c "import sys; sys.path.insert(0, 'utils'); from auth import save_access_key; save_access_key('<KEY>')"
+   ```
+3. 保存成功后重新运行步骤四的提交命令
 
 ## 常见错误及处理
 

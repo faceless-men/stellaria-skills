@@ -47,14 +47,14 @@ def get_access_key() -> str:
     if not key:
         key = read_config().get(CONFIG_KEY, "").strip()
 
-    # 3. 提示用户输入并保存
+    # 3. 交互式终端下提示输入并保存
     if not key:
-        print("未找到 Access Key，请输入后将自动保存至 ~/.codex/config.json", file=sys.stderr)
         key = prompt_access_key()
-        if not key:
-            print("❌ 错误: Access Key 不能为空，已退出。", file=sys.stderr)
+        if key:
+            save_access_key(key)
+            print("✅ Access Key 已保存至 ~/.codex/config.json", file=sys.stderr)
+        else:
+            print("❌ STELLARIA_ACCESS_KEY_MISSING: 未找到 Access Key。", file=sys.stderr)
             sys.exit(1)
-        save_access_key(key)
-        print("✅ Access Key 已保存至 ~/.codex/config.json")
 
     return key
