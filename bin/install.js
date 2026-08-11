@@ -3,8 +3,11 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
+const { execSync } = require('child_process');
 
-const ROOT_DIR = path.join(__dirname, '..');
+const REPO_URL = 'https://github.com/faceless-men/stellaria-skills.git';
+const REPO_DIR = path.join(os.homedir(), 'stellaria-skills');
+const ROOT_DIR = REPO_DIR;
 const CODEX_SKILLS_DIR = path.join(os.homedir(), '.codex', 'skills');
 
 // 辅助函数：安全删除旧目标
@@ -103,7 +106,29 @@ function checkConfig() {
   }
 }
 
+function cloneOrUpdateRepo() {
+  if (fs.existsSync(path.join(REPO_DIR, '.git'))) {
+    console.log(`\n🔄 仓库已存在，正在更新: ${REPO_DIR}`);
+    try {
+      execSync(`git -C "${REPO_DIR}" pull --ff-only`, { stdio: 'inherit' });
+      console.log('  ✅ 更新成功');
+    } catch (err) {
+      console.warn(`  ⚠️ 更新失败: ${err.message}，将使用本地现有代码`);
+    }
+  } else {
+    console.log(`\n📥 正在克隆仓库到 ${REPO_DIR}...`);
+    try {
+      execSync(`git clone "${REPO_URL}" "${REPO_DIR}"`, { stdio: 'inherit' });
+      console.log('  ✅ 克隆成功');
+    } catch (err) {
+      console.error(`  ❌ 克隆失败: ${err.message}`);
+      process.exit(1);
+    }
+  }
+}
+
 async function main() {
+  cloneOrUpdateRepo();
   await checkConfig();
   installAllSkills();
 }

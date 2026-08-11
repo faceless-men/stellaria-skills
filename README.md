@@ -32,28 +32,20 @@
 
 ### 前置要求
 
-- [Codex](https://openai.com/codex) CLI
-- Node.js
-- Python 3
+- Node.js 14+（含 npx）
+- [Codex](https://openai.com/codex) CLI（用于运行 Skill）
 
 ### 步骤
 
-**1. 克隆仓库**
+**1. 一键安装**
 
 ```bash
-git clone git@github.com:<your-org>/stellaria-skills.git
-cd stellaria-skills
+npx github:faceless-men/stellaria-skills
 ```
 
-**2. 运行安装脚本**
+脚本会自动将仓库克隆至 `~/stellaria-skills`，并将所有 Skill 软链接到 `~/.codex/skills/`。
 
-```bash
-node bin/install.js
-```
-
-脚本会自动将所有 Skill 软链接到 `~/.codex/skills/`，并检查 `~/.codex/config.json` 中是否已配置服务器地址。
-
-**3. 填写服务器地址**
+**2. 填写服务器地址**
 
 编辑 `~/.codex/config.json`，添加以下配置：
 
@@ -65,7 +57,7 @@ node bin/install.js
 
 > 真实服务器地址请联系团队负责人获取。
 
-**4. 配置 Access Key**
+**3. 配置 Access Key**
 
 首次运行任意 Skill 时，会提示输入 Access Key，输入后自动保存至 `~/.codex/config.json`，后续无需重复输入。
 
