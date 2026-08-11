@@ -14,7 +14,7 @@ from auth import get_access_key
 def create_record(record: dict) -> None:
     key = get_access_key()
 
-    base_url = (os.getenv("STELLARIA_API_BASE_URL") or "http://localhost:8888").rstrip("/")
+    base_url = os.getenv("STELLARIA_API_BASE_URL").rstrip("/")
 
     organize_id = os.getenv("STELLARIA_ORGANIZE_ID", "").strip()
     if organize_id:
@@ -22,7 +22,7 @@ def create_record(record: dict) -> None:
 
     data = json.dumps(record, ensure_ascii=False).encode()
     req = urllib.request.Request(
-        f"{base_url}/auth/createRecord",
+        f"{base_url}/api/auth/createRecord",
         data=data,
         headers={"Content-Type": "application/json", "auth-code": key},
         method="POST",
