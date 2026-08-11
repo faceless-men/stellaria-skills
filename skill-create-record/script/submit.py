@@ -22,9 +22,9 @@ def create_record(record: dict) -> None:
 
     data = json.dumps(record, ensure_ascii=False).encode()
     req = urllib.request.Request(
-        f"{base_url}/public/createRecord",
+        f"{base_url}/auth/createRecord",
         data=data,
-        headers={"Content-Type": "application/json", "XTOKEN": key},
+        headers={"Content-Type": "application/json", "auth-code": key},
         method="POST",
     )
     try:

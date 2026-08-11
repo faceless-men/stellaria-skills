@@ -25,7 +25,7 @@ def main() -> None:
     base_url = (os.environ.get("STELLARIA_API_BASE_URL") or "http://127.0.0.1:8888").rstrip("/")
     url = f"{base_url}/auth/findRecord?{urlencode({'name': customer_name})}"
 
-    req = urllib.request.Request(url, headers={"XTOKEN": key}, method="GET")
+    req = urllib.request.Request(url, headers={"auth-code": key}, method="GET")
     try:
         with urllib.request.urlopen(req) as resp:
             text = resp.read().decode(errors="replace")
