@@ -30,6 +30,15 @@ def prompt_access_key() -> str:
         return ""
 
 
+def get_base_url() -> str:
+    url = os.environ.get("STELLARIA_API_BASE_URL", "").strip()
+    if not url:
+        url = read_config().get("STELLARIA_API_BASE_URL", "").strip()
+    if not url:
+        url = "http://127.0.0.1:8888"
+    return url.rstrip("/")
+
+
 def get_access_key() -> str:
     # 1. 优先读取环境变量
     key = os.environ.get("STELLARIA_ACCESS_KEY", "").strip()

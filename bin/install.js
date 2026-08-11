@@ -76,17 +76,18 @@ function installAllSkills() {
   console.log('\n🎉 所有技能安装完毕！请重启 Codex 查看生效状态。');
 }
 
-function checkSettings() {
-  const settingsPath = path.join(ROOT_DIR, '.claude', 'settings.json');
-  const examplePath = path.join(ROOT_DIR, '.claude', 'settings.example.json');
-
-  if (!fs.existsSync(settingsPath)) {
-    console.log('\n⚙️  未检测到 .claude/settings.json，正在从模板创建...');
-    fs.copyFileSync(examplePath, settingsPath);
-    console.log('  ✅ 已创建 .claude/settings.json');
-    console.log('  ⚠️  请编辑该文件，将 STELLARIA_API_BASE_URL 替换为真实服务器地址。');
+function checkConfig() {
+  const configPath = path.join(os.homedir(), '.codex', 'config.json');
+  let config = {};
+  if (fs.existsSync(configPath)) {
+    try { config = JSON.parse(fs.readFileSync(configPath, 'utf8')); } catch {}
+  }
+  if (!config.STELLARIA_API_BASE_URL) {
+    console.log('\n⚙️  未检测到 STELLARIA_API_BASE_URL 配置。');
+    console.log('  请在 ~/.codex/config.json 中添加：');
+    console.log('  { "STELLARIA_API_BASE_URL": "https://your-server-address" }');
   }
 }
 
-checkSettings();
+checkConfig();
 installAllSkills();

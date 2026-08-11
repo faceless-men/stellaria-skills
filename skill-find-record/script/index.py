@@ -8,7 +8,7 @@ from urllib.parse import urlencode
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "utils"))
 
-from auth import get_access_key
+from auth import get_access_key, get_base_url
 
 
 def main() -> None:
@@ -22,7 +22,7 @@ def main() -> None:
     print(f"🔑 成功获取 Access Key: {key[:4]}****")
     print(f"📡 正在查询客户 \"{customer_name}\" 的病例记录...")
 
-    base_url = os.environ.get("STELLARIA_API_BASE_URL").rstrip("/")
+    base_url = get_base_url()
     url = f"{base_url}/api/auth/findRecord?{urlencode({'name': customer_name})}"
 
     req = urllib.request.Request(url, headers={"auth-code": key}, method="GET")

@@ -8,13 +8,13 @@ from urllib.error import HTTPError, URLError
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "utils"))
 
-from auth import get_access_key
+from auth import get_access_key, get_base_url
 
 
 def create_record(record: dict) -> None:
     key = get_access_key()
 
-    base_url = os.getenv("STELLARIA_API_BASE_URL").rstrip("/")
+    base_url = get_base_url()
 
     organize_id = os.getenv("STELLARIA_ORGANIZE_ID", "").strip()
     if organize_id:
