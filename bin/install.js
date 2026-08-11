@@ -83,11 +83,29 @@ function checkConfig() {
     try { config = JSON.parse(fs.readFileSync(configPath, 'utf8')); } catch {}
   }
   if (!config.STELLARIA_API_BASE_URL) {
-    console.log('\n⚙️  未检测到 STELLARIA_API_BASE_URL 配置。');
-    console.log('  请在 ~/.codex/config.json 中添加：');
-    console.log('  { "STELLARIA_API_BASE_URL": "https://your-server-address" }');
+    process.stdout.write('\n⚙️  未检测到 STELLARIA_API_BASE_URL，请输入服务器地址: ');
+    const url = require('readline').createInterface({ input: process.stdin, output: process.stdout, terminal: false });
+    return new Promise((resolve) => {
+      url.once('line', (line) => {
+        url.close();
+        const value = line.trim();
+        if (!value) {
+          console.warn('  ⚠️  未输入地址，跳过配置。请手动编辑 ~/.codex/config.json。');
+          return resolve();
+        }
+        config.STELLARIA_API_BASE_URL = value;
+        fs.mkdirSync(path.dirname(configPath), { recursive: true });
+        fs.writeFileSync(configPath, JSON.stringify(config, null, 2), 'utf8');
+        console.log('  ✅ 已保存至 ~/.codex/config.json');
+        resolve();
+      });
+    });
   }
 }
 
-checkConfig();
-installAllSkills();
+async function main() {
+  await checkConfig();
+  installAllSkills();
+}
+
+main();

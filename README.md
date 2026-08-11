@@ -51,17 +51,15 @@ cd stellaria-skills
 node bin/install.js
 ```
 
-脚本会自动将所有 Skill 软链接到 `~/.codex/skills/`，并在首次运行时创建 `.claude/settings.json` 配置文件。
+脚本会自动将所有 Skill 软链接到 `~/.codex/skills/`，并检查 `~/.codex/config.json` 中是否已配置服务器地址。
 
 **3. 填写服务器地址**
 
-编辑项目目录下的 `.claude/settings.json`：
+编辑 `~/.codex/config.json`，添加以下配置：
 
 ```json
 {
-  "env": {
-    "STELLARIA_API_BASE_URL": "https://your-server-address"
-  }
+  "STELLARIA_API_BASE_URL": "https://your-server-address"
 }
 ```
 
