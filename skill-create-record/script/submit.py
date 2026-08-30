@@ -27,6 +27,22 @@ def _translate_newlines(value):
     return value
 
 
+def _sort_treat_history(record: dict) -> dict:
+    """把 treatHistory 按日期降序排列（最新日期在前）。
+
+    无论调用方传入的顺序如何，提交前统一排序，保证入库与展示均为降序。
+    date 为 ISO8601 字符串（如 2023-09-21T00:00:00Z），可直接按字符串比较。
+    """
+    th = record.get("treatHistory")
+    if isinstance(th, list) and th:
+        record["treatHistory"] = sorted(
+            th,
+            key=lambda x: (x or {}).get("date") or "",
+            reverse=True,
+        )
+    return record
+
+
 def create_record(record: dict) -> None:
     key = get_access_key()
 
@@ -125,6 +141,8 @@ def main() -> None:
 
     # 把字面量 \n 文本转译为真实换行，避免入库后弹窗显示成 \n
     record = _translate_newlines(record)
+    # 诊疗经过按日期降序排列（最新日期在前）
+    record = _sort_treat_history(record)
 
     birthday = (record.get("patient") or {}).get("birthday") or ""
     if birthday and not re.fullmatch(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z", birthday):
