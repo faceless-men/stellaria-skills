@@ -81,13 +81,13 @@ python3 skill-create-record/script/parse.py <Excel文件路径>
 1. `patient.name`：患者姓名，必须从表单原样逐字提取，严禁推断或补全
 2. `patient.gender`：含"男"或"male" → 1；含"女"或"female" → 2
 3. `patient.birthday`：统一转为 `"YYYY-MM-DDT00:00:00Z"`；日期序列号按 Excel 基准日期（1899-12-30）换算
-4. `patient.languages`：■选中的语言用逗号拼接，日文→2，英文→1，中文→3；"其他"后的内容直接追加
+4. `patient.languages`：■选中的语言用逗号拼接；"其他"后的内容直接追加
 5. `patient.height` / `patient.weight`：提取整数（"156cm"→156，"40 kg"→40）
-6. `patient.reports`：■选中的资料用逗号拼接，画像CD-ROM→1，各种血液检查→2，病理检查→3，基因検查→4；"其他"后的内容直接追加
+6. `patient.reports`：■选中的资料用逗号拼接；"其他"后的内容直接追加
 7. `patient.treatState`：治疗前 → 1
 7. `patient.channel`：固定填写 `"codex"`
-8. `diseaseInfo.purpose`：■选中后用逗号拼接，第二诊疗意见→1，希望在日本接受治疗→2；"其他【XXX】"中的XXX直接追加
-9. `diseaseInfo.currentTreat`：■选中后用逗号拼接，手术→1，放疗→2，化疗→3；"其他【XXX】"中的XXX直接追加
+8. `diseaseInfo.purpose`：■选中后用逗号拼接；"其他【XXX】"中的XXX直接追加
+9. `diseaseInfo.currentTreat`：■选中后用逗号拼接；"其他【XXX】"中的XXX直接追加
 10. `diseaseInfo.historyOfDisease`：提取"既往病史："后的内容
 11. `diseaseInfo.familyMedicalHistory`：若内容为"无"或"没有"则返回 `""`，否则原样返回
 12. `diseaseInfo.allergyHistory`：■无→`""`；■有→提取括号内食物/药物名称
