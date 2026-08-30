@@ -58,8 +58,11 @@ python3 skill-create-record/script/parse.py <Excel文件路径>
 【服药记录】（共 N 条）
 1. 药品名：xxx，用法：xxx
 
-【诊疗经过】（共 N 条）
-1. 2023-01-01：xxx
+【诊疗经过】（共 N 条，按日期合并，同一天的多项用序号区分）
+1. 2023-01-01：
+   1. xxx
+   2. yyy
+2. 2023-01-08：zzz
 
 【患者提问】（共 N 条）
 1. xxx
@@ -93,7 +96,7 @@ python3 skill-create-record/script/parse.py <Excel文件路径>
 15. `diseaseInfo.painInfo`：□无→`""`；■有→提取括号内部位
 16. `diseaseInfo.diseaseName`：提取"病名"或"疾患名"后的内容
 17. `medicineHistory`：从服药史表格每行提取，跳过 jpName 和 name 均为空的行
-18. `treatHistory`：从诊疗经过按时间节点切分，每段提取 date（ISO8601）和 content
+18. `treatHistory`：从诊疗经过按时间节点切分，每段提取 date（ISO8601）和 content；**必须按日期（天）合并**：同一日期的多条诊疗项目合并为一条记录，date 取该日期，content 内用序号（1.、2.、3.…）逐项区分；合并后各记录仍按日期升序排列
 19. `questionAnswer`：每个非空问题作为一条记录，answer 为空字符串
 
 **注意：■ 表示选中，□ 表示未选中；字段无内容时，数值填 null，字符串填 `""`**
