@@ -80,7 +80,7 @@ python3 skill-create-record/script/parse.py <Excel文件路径>
 
 1. `patient.name`：患者姓名，必须从表单原样逐字提取，严禁推断或补全
 2. `patient.gender`：含"男"或"male" → 1；含"女"或"female" → 2
-3. `patient.birthday`：统一转为 `"YYYY-MM-DDT00:00:00Z"`；日期序列号按 Excel 基准日期（1899-12-30）换算
+3. `patient.birthday`：统一转为 `"YYYY-MM-DDT00:00:00Z"`；日期序列号按 Excel 基准日期（1899-12-30）换算；若资料中未获取到出生日期，则最终提交给服务端的 JSON **不要包含 `birthday` 字段**（直接省略）
 4. `patient.languages`：■选中的语言用逗号拼接；"其他"后的内容直接追加
 5. `patient.height` / `patient.weight`：提取整数（"156cm"→156，"40 kg"→40）
 6. `patient.reports`：■选中的资料用逗号拼接；"其他"后的内容直接追加
@@ -99,7 +99,7 @@ python3 skill-create-record/script/parse.py <Excel文件路径>
 18. `treatHistory`：从诊疗经过按时间节点切分，每段提取 date（ISO8601）和 content；**必须按日期（天）合并**：同一日期的多条诊疗项目合并为一条记录，date 取该日期，content 内用序号（1.、2.、3.…）逐项区分；**各项之间用真实换行分隔**（在传给 submit.py 的 JSON 字符串中写成单个 `\n` 转义，`json.loads` 解析后即为真实换行；切勿写成 `\\n`，否则入库的是字面量 `\n` 文本，弹窗会原样显示 `\n` 而不是换行）；合并后各记录仍按日期降序排列
 19. `questionAnswer`：每个非空问题作为一条记录，answer 为空字符串
 
-**注意：■ 表示选中，□ 表示未选中；字段无内容时，数值填 null，字符串填 `""`**
+**注意：■ 表示选中，□ 表示未选中；字段无内容时，数值填 null，字符串填 `""`**（`patient.birthday` 例外：未获取到出生日期时直接省略该字段，不填 `null` 或 `""`）
 
 构造完成后，确保 JSON 包含以下顶层字段：
 - `patient`（含 `name`、`channel`，其余按表单填写）
