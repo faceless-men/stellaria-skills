@@ -106,14 +106,45 @@ function checkConfig() {
   }
 }
 
+// 辅助函数：解析当前分支对应的远端上游分支（如 origin/main）
+function getUpstreamBranch(repoDir) {
+  try {
+    const upstream = execSync(`git -C "${repoDir}" rev-parse --abbrev-ref @{upstream}`, {
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    }).trim();
+    return upstream || 'origin/main';
+  } catch {
+    return 'origin/main';
+  }
+}
+
 function cloneOrUpdateRepo() {
   if (fs.existsSync(path.join(REPO_DIR, '.git'))) {
     console.log(`\n🔄 仓库已存在，正在更新: ${REPO_DIR}`);
     try {
       execSync(`git -C "${REPO_DIR}" pull --ff-only`, { stdio: 'inherit' });
       console.log('  ✅ 更新成功');
+      return;
     } catch (err) {
-      console.warn(`  ⚠️ 更新失败: ${err.message}，将使用本地现有代码`);
+      const reason = String(err.message).split('\n')[0];
+      console.warn(`  ⚠️ 快进更新失败: ${reason}`);
+    }
+
+    // 快进失败通常是本地分支与远端分叉（例如本地有重复/多余的提交）。
+    // 安装目录以远端为准：拉取远端并强制同步到远端最新，避免静默使用旧代码。
+    try {
+      console.log('  🔄 本地与远端分叉，正在强制同步到远端最新版本...');
+      const upstream = getUpstreamBranch(REPO_DIR);
+      execSync(`git -C "${REPO_DIR}" fetch origin`, { stdio: 'inherit' });
+      execSync(`git -C "${REPO_DIR}" reset --hard "${upstream}"`, { stdio: 'inherit' });
+      console.log(`  ✅ 已强制同步到远端最新 (${upstream})`);
+    } catch (err) {
+      const reason = String(err.message).split('\n')[0];
+      console.error(`  ❌ 无法从远端更新: ${reason}`);
+      console.error('  安装目录可能停留在旧版本，请检查网络或手动执行:');
+      console.error(`    git -C "${REPO_DIR}" fetch origin && git -C "${REPO_DIR}" reset --hard origin/main`);
+      process.exit(1);
     }
   } else {
     console.log(`\n📥 正在克隆仓库到 ${REPO_DIR}...`);
