@@ -11,6 +11,22 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "utils"))
 from auth import get_access_key, get_base_url
 
 
+def _translate_newlines(value):
+    """把字符串中字面量的 \\n（反斜杠+n 两个字符）转译为真实换行符。
+
+    若调用方在 JSON 中把换行写成 `\\n`（双反斜杠转义），json.loads 后得到的是
+    字面量 `\\n` 文本，入库后弹窗会原样显示 `\\n` 而不是换行。这里统一转译，
+    保证 content 等字段以真实换行存储。
+    """
+    if isinstance(value, dict):
+        return {k: _translate_newlines(v) for k, v in value.items()}
+    if isinstance(value, list):
+        return [_translate_newlines(v) for v in value]
+    if isinstance(value, str):
+        return value.replace("\\r\\n", "\n").replace("\\n", "\n")
+    return value
+
+
 def create_record(record: dict) -> None:
     key = get_access_key()
 
@@ -106,6 +122,9 @@ def main() -> None:
     except json.JSONDecodeError as e:
         print(f"❌ JSON 解析失败: {e}", file=sys.stderr)
         sys.exit(1)
+
+    # 把字面量 \n 文本转译为真实换行，避免入库后弹窗显示成 \n
+    record = _translate_newlines(record)
 
     birthday = (record.get("patient") or {}).get("birthday") or ""
     if birthday and not re.fullmatch(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z", birthday):

@@ -96,7 +96,7 @@ python3 skill-create-record/script/parse.py <Excel文件路径>
 15. `diseaseInfo.painInfo`：□无→`""`；■有→提取括号内部位
 16. `diseaseInfo.diseaseName`：提取"病名"或"疾患名"后的内容
 17. `medicineHistory`：从服药史表格每行提取，跳过 jpName 和 name 均为空的行
-18. `treatHistory`：从诊疗经过按时间节点切分，每段提取 date（ISO8601）和 content；**必须按日期（天）合并**：同一日期的多条诊疗项目合并为一条记录，date 取该日期，content 内用序号（1.、2.、3.…）逐项区分；合并后各记录仍按日期升序排列
+18. `treatHistory`：从诊疗经过按时间节点切分，每段提取 date（ISO8601）和 content；**必须按日期（天）合并**：同一日期的多条诊疗项目合并为一条记录，date 取该日期，content 内用序号（1.、2.、3.…）逐项区分；**各项之间用真实换行分隔**（在传给 submit.py 的 JSON 字符串中写成单个 `\n` 转义，`json.loads` 解析后即为真实换行；切勿写成 `\\n`，否则入库的是字面量 `\n` 文本，弹窗会原样显示 `\n` 而不是换行）；合并后各记录仍按日期降序排列
 19. `questionAnswer`：每个非空问题作为一条记录，answer 为空字符串
 
 **注意：■ 表示选中，□ 表示未选中；字段无内容时，数值填 null，字符串填 `""`**
